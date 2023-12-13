@@ -1,11 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Movimiento imagenes</title>
+    <style>
+      canvas {
+        border: 10px solid rgb(21, 255, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="areaDibujo" width="1000" height="1000"></canvas>
+    <script>
+      var canvas = document.getElementById("areaDibujo");
+      var ctx = canvas.getContext("2d");
+      var posicionPacman = 920;
+      var posicionDog = 0;
+      let posicionX = 0;
+      let posicionY = 0;
+      let direccionX = 40;
+      let direccionY = 10;
+      var pacman = {
+        x: 50,
+        y: 50,
+        velocidad: 5,
+        direccion: "derecha",
+        rotacion: 0,
+      };
+
+      var imagenWidth = 80;
+      var imagenHeight = 80;
+      var imagenWidth = 80;
+      var imagenHeight = 80;
+
+      var imagenPacman = new Image();
+      var imagenPerro = new Image();
+
+      imagenPacman.src = "/images/pacman.png";
+      imagenPerro.src = "/images/perro.png";
+
+      imagenPacman.onload = function () {
+        dibujarPacman();
+      };
+
+      imagenPerro.onload = function () {
+        dibujarDog();
+      };
+
+      function dibujarPacman() {
+        ctx.save(); 
+        ctx.translate(pacman.x + 40, pacman.y + 40); 
+        ctx.rotate(pacman.rotacion);
+        ctx.drawImage(imagenPacman, -40, -40, 80, 80);
+        ctx.restore(); 
+      }
+      function actualizarPosicion() {
+        switch (pacman.direccion) {
+          case "arriba":
+            pacman.y -= pacman.velocidad;
+            pacman.rotacion = -Math.PI / 2; 
+            break;
+          case "abajo":
+            pacman.y += pacman.velocidad;
+            pacman.rotacion = Math.PI / 2; 
+            break;
+          case "izquierda":
+            pacman.x -= pacman.velocidad;
+            pacman.rotacion = Math.PI;
+            break;
+          case "derecha":
+            pacman.x += pacman.velocidad;
+            pacman.rotacion = 0; 
+            break;
+        }
+        if (pacman.x < 0) pacman.x = 0;
+        if (pacman.y < 0) pacman.y = 0;
+        if (pacman.x + 80 > canvas.width) pacman.x = canvas.width - 80;
+        if (pacman.y + 80 > canvas.height) pacman.y = canvas.height - 80;
+      }
+      function sePresionoUnaTecla(event) {
+        switch (event.key) {
+          case "w":
+            pacman.direccion = "arriba";
+            break;
+          case "s":
+            pacman.direccion = "abajo";
+            break;
+          case "a":
+            pacman.direccion = "izquierda";
+            break;
+          case "d":
+            pacman.direccion = "derecha";
+            break;
+          default:
+            break;
+        }
+      }
+      function dibujarDog() {
+        ctx.drawImage(imagenPerro, posicionX, posicionY, 80, 80);
+        posicionX += 10 * direccionX;
+        posicionY += 10 * direccionY;
+        if (posicionX <= 0 || posicionX >= canvas.width - 80) {
+          direccionX *= -1;
+        }
+        if (posicionY <= 0 || posicionY >= canvas.height - 80) {
+          direccionY *= -1;
+        }
+      }
+      window.addEventListener("keydown", sePresionoUnaTecla);
+      function bucleJuego() {
+        actualizarPosicion();
+        requestAnimationFrame(bucleJuego);
+      }
+
+      function dibujar() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        dibujarDog();
+        dibujarPacman();
+      }
     
-</body>
+    setInterval(dibujar, 100);
+    bucleJuego();
+      
+    </script>
+  </body>
 </html>

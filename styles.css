@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+body {
+    font-family: 'Fredoka One', cursive;
+    background-color:  #ffffff;
+}
+.titulo {
+    color: rgb(0, 0, 0);
+    font-size: 48px;
+    height: 10px;
+    
+}
+.batalla{    
+    display: grid;    
+    text-align: center;
+}
+#ver-mapa {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#ver-mapa button {
+    width: 130px;
+    font-size: 23px;
+    color: black;
+    background-color: #89CFFD;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 10px 0;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+@media (max-width: 530px) {
+    #ver-mapa div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+}
